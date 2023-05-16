@@ -354,7 +354,7 @@ def add_pitch(acc_dict, note_ids, expr_idx, reading_idx, output_idx):
         reading_field = "".join(re.split("\[|\]", reading_field)[::2])
         
         # generate png on OJAD website
-        img = get_pitched(reading_field, name = nid) 
+        img = get_pitched(reading_field, filename = nid) 
         if not img:
             num_svg_fail += 1
             continue
