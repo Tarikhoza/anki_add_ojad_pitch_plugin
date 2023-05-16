@@ -397,9 +397,9 @@ pa_menu_about = pa_menu.addAction('about')
 # add triggers
 pa_menu_add.triggered.connect(add_pitch_dialog)
 pa_menu_remove.triggered.connect(remove_pitch_dialog)
-pa_menu_add_user.triggered.connect(add_user_pitch_dialog)
-pa_menu_remove_user.triggered.connect(remove_user_pitch_dialog)
-pa_menu_custom_db_path.triggered.connect(show_custom_db_path_dialog)
+#pa_menu_add_user.triggered.connect(add_user_pitch_dialog)
+#pa_menu_remove_user.triggered.connect(remove_user_pitch_dialog)
+#pa_menu_custom_db_path.triggered.connect(show_custom_db_path_dialog)
 pa_menu_about.triggered.connect(about_dialog)
 # and add it to the tools menu
 mw.form.menuTools.addMenu(pa_menu)
