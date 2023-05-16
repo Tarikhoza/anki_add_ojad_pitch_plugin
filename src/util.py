@@ -3,6 +3,7 @@
 
 import os
 import re
+import shutil
 from aqt import mw
 from aqt.utils import Qt, QDialog, QVBoxLayout, QLabel, QListWidget,\
                       QDialogButtonBox
@@ -12,7 +13,9 @@ from .draw_pitch import pitch_svg
 from ._constants import re_ja_patt, re_hira_patt, re_variation_selectors_patt,\
                         re_bracketed_content_patt
 
+from .ojad import get_pitched_text as get_pitched
 
+from random import randint
 def get_qt_version():
     """ Return the version of Qt used by Anki.
     """
@@ -223,11 +226,7 @@ def select_note_fields_add(note_type_id):
     """
 
     choices = [nt['name'] for nt in mw.col.models.get(note_type_id)['flds']]
-    expr_idx = customChooseList(
-        'Which field contains the Japanese expression?', choices
-    )
-    if expr_idx is None:
-        return None, None, None
+    expr_idx = 0 
     reading_idx = customChooseList(
         'Which field contains the reading?', choices
     )
@@ -351,15 +350,12 @@ def add_pitch(acc_dict, note_ids, expr_idx, reading_idx, output_idx):
         # determine accent pattern
         expr_field = note[expr_fld].strip()
         reading_field = note[reading_fld].strip()
-        patt = get_acc_patt(expr_field, reading_field, [acc_dict])
-        if not patt:
-            not_found_list.append([nid, expr_field])
-            continue
-        hira, LlHh_patt = patt
-        LH_patt = re.sub(r'[lh]', '', LlHh_patt)
-        # generate SVG for accent pattern
-        svg = pitch_svg(hira, LH_patt)
-        if not svg:
+        # remove brackets from furigana anotations and remove spaces
+        reading_field = "".join(re.split("\[|\]", reading_field)[::2])
+        
+        # generate png on OJAD website
+        img = get_pitched(reading_field, name = nid) 
+        if not img:
             num_svg_fail += 1
             continue
         if len(note[output_fld]) > 0:
@@ -369,9 +365,14 @@ def add_pitch(acc_dict, note_ids, expr_idx, reading_idx, output_idx):
         # extend and save note
         note[output_fld] = (
             '{}<!-- accent_start -->{}{}<!-- accent_end -->'
-            ).format(note[output_fld], separator, svg)  # add svg
+            ).format(note[output_fld], separator, f"<img src='{img}'/>")  # add img
         mw.col.update_note(note)
         num_updated += 1
+
+    media_folder = mw.col.media.dir()
+    for file in os.listdir("pitch_graph"):
+        shutil.copyfile(f"pitch_graph/{file}", f"{media_folder}/{file}")
+    
     return not_found_list, num_updated, num_already_done, num_svg_fail
 
 

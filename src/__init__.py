@@ -1,15 +1,10 @@
 """ Anki plugin to add pitch accent indicators to cards.
-
-    This plugin makes use of data from Wadoku by Ulrich Apel.
-    (See file wadoku_parse.py for more details.)
-    Wadoku license information is available on the web:
-
-    http://www.wadoku.de/wiki/display/WAD/Wörterbuch+Lizenz
-    http://www.wadoku.de/wiki/display/WAD/%28Vorschlag%29+Neue+Wadoku-Daten+Lizenz
+    This plugin makes use of the www.gavo.t.u-tokyo.ac.jp website.
+    https://www.gavo.t.u-tokyo.ac.jp/ojad/eng/pages/home
 """
 
-__author__ = 'Tarek Saier'
-__credits__ = ['kclisp', 'Peter Maxwell']
+__author__ = 'Tarik Hozic'
+__credits__ = ['Tarek Saier', 'kclisp', 'Peter Maxwell']
 __license__ = 'MIT'
 
 import json
@@ -25,20 +20,22 @@ from .util import add_pitch, remove_pitch, get_accent_dict, get_note_type_ids,\
                   select_note_type_id, select_note_fields_add,\
                   select_note_fields_del, get_plugin_dir_path,\
                   get_acc_patt, clean_japanese_from_note_field
+
 from .draw_pitch import pitch_svg
+from ojad.ojad import get_pitched_text as get_pitch
 
 
 def about_dialog():
     """ Popup displaying information about the add-on.
     """
 
-    gh_link = 'https://github.com/IllDepence/anki_add_pitch_plugin'
-    aw_link = 'https://ankiweb.net/shared/info/148002038'
+    gh_link = 'https://github.com/Tarikhoza/anki_add_ojad_pitch_plugin'
+    aw_link = ''
     license_link = gh_link + '/blob/master/LICENSE'
 
     info_text = (
         '<center>'
-        '<h3>Japanese Pitch Accent</h3>'
+        '<h3>OJAD Japanese Pitch Accent</h3>'
         '<p><b>Version</b><br>{version}</p>'
         '<p><b>License</b><br>'
         '<a href="{license_link}">{license_name}</a>'
@@ -47,7 +44,7 @@ def about_dialog():
         '<p><b>Contributors</b><br>{contrib}</p>'
         '<p><a href="{gh_link}">GitHub</a>'
         '&nbsp;<b>&middot;</b>&nbsp;'
-        '<a href="{aw_link}">AnkiWeb</a></p>'
+        #        '<a href="{aw_link}">AnkiWeb</a></p>'
         '</center>'
     ).format(
         version=__version__,
@@ -99,7 +96,7 @@ def add_pitch_dialog():
         showInfo('No cards found for selected note type.')
         return
     expr_idx, rdng_idx, out_idx = select_note_fields_add(note_type_id)
-    if None in [expr_idx, rdng_idx, out_idx]:
+    if None in [rdng_idx, out_idx]:
         return
 
     # extend notes
@@ -304,17 +301,6 @@ def set_pitch_automatically(editor):
     acc_dict.update(
         get_user_accent_dict()
     )
-    patt = get_acc_patt(expr_guess, reading_guess, [acc_dict])
-    if not patt:
-        showInfo(
-            'Could not find pitch for expression “{}”'.format(
-                expr_guess
-            ),
-            title='Card parsing failure'
-        )
-        return
-    hira, LlHh_patt = patt
-    LH_patt = re.sub(r'[lh]', '', LlHh_patt)
 
     set_pitch(editor, hira, LH_patt)
 
@@ -401,7 +387,7 @@ def pre_load_pitch_data(col):
 
 
 # add menu items
-pa_menu = QMenu('Pitch Accent', mw)
+pa_menu = QMenu('OJAD Pitch Accent', mw)
 pa_menu_add = pa_menu.addAction('bulk add')
 pa_menu_remove = pa_menu.addAction('bulk remove')
 pa_menu_add_user = pa_menu.addAction('manually add/edit/remove')
@@ -419,7 +405,6 @@ pa_menu_about.triggered.connect(about_dialog)
 mw.form.menuTools.addMenu(pa_menu)
 # add editor button
 gui_hooks.editor_did_init_buttons.append(add_set_pitch_buttons)
-
 # # pre-load pitch accent dicts once collection is loaded
 # gui_hooks.collection_did_load.append(pre_load_pitch_data)
 # # commented out for the moment because presumably for most people
