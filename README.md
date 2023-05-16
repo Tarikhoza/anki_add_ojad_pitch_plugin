@@ -16,3 +16,4 @@ Anki addon to automatically add pitch accent graph from OJAD to cards.
 
 ### Notes
 * All generated graphs are scraped from the [OJAD](https://www.gavo.t.u-tokyo.ac.jp) website
+* This repository was forked from [IllDepence](https://github.com/IllDepence/anki_add_pitch_plugin), I made just some changes to his code. If you like my work, you will like his to. Most of the code of this repostory wrote [IllDepence](https://github.com/IllDepence/anki_add_pitch_plugin) and the contributors on his repository.
