@@ -1,5 +1,12 @@
 Anki addon to automatically add pitch accent information to cards.
 
+* Installation
+    * Install Python3 and PIP
+    * Install package dependences 
+        $ pip install geckodriver-autoinstaller==0.1.0 selenium==4.4.3 beautifulsoup4==4.11.1
+    * Install package from ankiweb or execute $ make dist
+        to generate an ankiaddon package, and import it
+
 ### Features
 * modes
     * bulk add and remove

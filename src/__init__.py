@@ -390,9 +390,9 @@ def pre_load_pitch_data(col):
 pa_menu = QMenu('OJAD Pitch Accent', mw)
 pa_menu_add = pa_menu.addAction('bulk add')
 pa_menu_remove = pa_menu.addAction('bulk remove')
-pa_menu_add_user = pa_menu.addAction('manually add/edit/remove')
-pa_menu_remove_user = pa_menu.addAction('remove all manually set')
-pa_menu_custom_db_path = pa_menu.addAction('show custom DB path')
+#pa_menu_add_user = pa_menu.addAction('manually add/edit/remove')
+#pa_menu_remove_user = pa_menu.addAction('remove all manually set')
+#pa_menu_custom_db_path = pa_menu.addAction('show custom DB path')
 pa_menu_about = pa_menu.addAction('about')
 # add triggers
 pa_menu_add.triggered.connect(add_pitch_dialog)
