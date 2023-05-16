@@ -3,7 +3,7 @@ Anki addon to automatically add pitch accent graph from OJAD to cards.
 ### Features
 * modes
     * bulk add and remove
-    * manual add/edit/remove for single cards(has to be tested)
+    * manual add/edit/remove for single cards(has to be implemented/tested)
 * accent illustrations
     * pitch accent illustrations are created as PNG; 
     * illustrations include pitch annotations as well as aligned kana
@@ -11,12 +11,9 @@ Anki addon to automatically add pitch accent graph from OJAD to cards.
     * accent illustrations sync to mobile and web versions of Anki
     * works for whole sentences and paragraphs
 
-### Example
-![](example.jpg)
-
 ### Todos
 * cleanup codebase
-   * remove any obsolite code, caused by the hack
+   * remove any obsolite code, caused by this hack
 
 
 ### Notes
